@@ -1,0 +1,32 @@
+3
+1 1 1
+1 1 1
+4 1 Camera
+4 2 Camcorder
+4 3 Computer
+
+3 
+1 1 1
+1 1 1
+3 3 Computer
+4 2 Computer
+5 1 Camera Computer
+
+2
+1 1 1
+2 1
+1 1 Computer
+1 3 Computer
+1 2 Computer
+
+3
+2 2 2
+2 1 3
+2 3 Camera
+5 1 Camera Camcorder
+3 2 Camcorder Computer
+1 6 Camera Camcorder Computer
+1 5 Camera Camcorder Computer
+1 4 Camera Camcorder Computer
+
+
