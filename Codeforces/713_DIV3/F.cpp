@@ -25,13 +25,6 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
-ll dp[30][2][2][2];
-
-ll solve(int pos, int c1, int c2){
-
-}
-
-
 int main()
 {
 	#ifdef ANARAP
@@ -44,20 +37,27 @@ int main()
 	ll t;
 	cin>>t;
 	forn(T,t){
-		ll x,y;
-		cin>>x>>y;
-		while(x>0){
-			bx.pb(x&1);
-			x/=2;
+		ll n,c;
+		cin>>n>>c;
+		vector<ll> a(n),b(n-1);
+		forn(i,n) cin>>a[i];
+		forn(i,n-1) cin>>b[i];
+		ll mini=(c+a[0]-1)/a[0];
+		ll dias=0,ahorro=0;
+		forr(i,0,n-1){
+			if(ahorro<=b[i]){
+				b[i]-=ahorro;
+				ahorro=0;
+			}else{
+				ahorro-=b[i];
+				b[i]=0;
+			}
+			dias+=(b[i]+a[i]-1)/a[i];
+			ahorro+=((b[i]+a[i]-1)/a[i])*a[i]-b[i];
+			mini=min(mini,dias+i+1+(c-ahorro+a[i+1]-1)/a[i+1]);
+			//cout<<"dias "<<dias<<" ahorro "<<ahorro<<endl;
 		}
-		while(y>0){
-			by.pb(y&1);
-			y/=2;
-		}
-		x>y? by.resize(bx.size(),0) : bx.resize(by.size(),0);
-		reverse(bx.begin(),bx.end());
-		reverse(by.begin(),by.end());
-		
+		cout<<mini<<"\n";
 	}
 	
 	return 0;

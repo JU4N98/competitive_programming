@@ -24,13 +24,7 @@ using namespace std;
 
 typedef long long ll;
 typedef pair<int,int> ii;
-
-ll dp[30][2][2][2];
-
-ll solve(int pos, int c1, int c2){
-
-}
-
+const ll MOD=1000000007;
 
 int main()
 {
@@ -41,24 +35,26 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
+	
+	ll fact[201000];
+	fact[0]=1;
+	forr(i,1,201000) fact[i]=(fact[i-1]*i)%MOD;
+	
 	ll t;
 	cin>>t;
 	forn(T,t){
-		ll x,y;
-		cin>>x>>y;
-		while(x>0){
-			bx.pb(x&1);
-			x/=2;
-		}
-		while(y>0){
-			by.pb(y&1);
-			y/=2;
-		}
-		x>y? by.resize(bx.size(),0) : bx.resize(by.size(),0);
-		reverse(bx.begin(),bx.end());
-		reverse(by.begin(),by.end());
-		
+		ll n;
+		cin>>n;
+		vector<ll> arr(n);
+		forn(i,n) cin>>arr[i];
+		ll control=arr[0];
+		forn(i,n) control&=arr[i];
+		ll count =0;
+		forn(i,n) if(arr[i]==control) count++;
+		cout<<(((count*(count-1))%MOD)*fact[n-2])%MOD<<"\n";
 	}
+	
+	
 	
 	return 0;
 }

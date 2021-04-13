@@ -25,13 +25,6 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
-ll dp[30][2][2][2];
-
-ll solve(int pos, int c1, int c2){
-
-}
-
-
 int main()
 {
 	#ifdef ANARAP
@@ -41,24 +34,38 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	ll t;
-	cin>>t;
-	forn(T,t){
-		ll x,y;
-		cin>>x>>y;
-		while(x>0){
-			bx.pb(x&1);
-			x/=2;
+	ll n, k;
+	cin>>n>>k;
+	
+	vector<vector<ll>> graph(k);
+	vector<ll> out(k,0),ans;
+	
+	forn(i,k){
+		graph[i].resize(k);
+		forn(j,k){
+			graph[i][j]=j;
 		}
-		while(y>0){
-			by.pb(y&1);
-			y/=2;
-		}
-		x>y? by.resize(bx.size(),0) : bx.resize(by.size(),0);
-		reverse(bx.begin(),bx.end());
-		reverse(by.begin(),by.end());
-		
+		out[i]=k;
 	}
+	
+	stack<ll> s;
+	s.push(0);
+	while(!s.empty()){
+		ll u = s.top();
+		if(out[u]==0){
+			ans.pb(u);
+			s.pop();
+		}else{
+			out[u]--;
+			s.push(graph[u][out[u]]);
+		}
+	}
+	
+	string str="";
+	forn(i,ans.size()-1) str+=char('a'+ans[i]);
+	while(str.size()<n) str+=str;
+	forn(i,n) cout<<str[i];
+	cout<<"\n";
 	
 	return 0;
 }

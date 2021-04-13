@@ -25,13 +25,6 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
-ll dp[30][2][2][2];
-
-ll solve(int pos, int c1, int c2){
-
-}
-
-
 int main()
 {
 	#ifdef ANARAP
@@ -44,20 +37,25 @@ int main()
 	ll t;
 	cin>>t;
 	forn(T,t){
-		ll x,y;
-		cin>>x>>y;
-		while(x>0){
-			bx.pb(x&1);
-			x/=2;
+		ll n,k;
+		cin>>n>>k;
+		if((k>n/2 && n%2==1) || (k>=n/2 && n%2==0) || (n==2 && k!=0)){
+			cout<<"-1\n";
+		}else{
+			vector<ll> ans(n,-1);
+			forn(i,k){
+				ans[1+i*2]=n-i;
+			}
+			ll act=1;
+			forn(i,n){
+				if(ans[i]==-1){
+					ans[i]=act;
+					act++;
+				}
+			}
+			forn(i,n) cout<<ans[i]<<" ";
+			cout<<"\n";
 		}
-		while(y>0){
-			by.pb(y&1);
-			y/=2;
-		}
-		x>y? by.resize(bx.size(),0) : bx.resize(by.size(),0);
-		reverse(bx.begin(),bx.end());
-		reverse(by.begin(),by.end());
-		
 	}
 	
 	return 0;

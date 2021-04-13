@@ -25,13 +25,6 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
-ll dp[30][2][2][2];
-
-ll solve(int pos, int c1, int c2){
-
-}
-
-
 int main()
 {
 	#ifdef ANARAP
@@ -44,21 +37,50 @@ int main()
 	ll t;
 	cin>>t;
 	forn(T,t){
-		ll x,y;
-		cin>>x>>y;
-		while(x>0){
-			bx.pb(x&1);
-			x/=2;
+		ll n,l,r,s;
+		cin>>n>>l>>r>>s;
+		ll minsum=0,maxsum=0;
+		vector<bool> arr(n+1,false);
+		forr(i,1,r-l+2) minsum+=i;
+		forn(i,r-l+1) maxsum+=n-i;
+
+		if(s<minsum || s>maxsum) cout<<"-1\n";
+		else{
+			ll act=0;
+			forr(i,1,r-l+2){
+				arr[i]=true;
+				act+=i;
+			}
+			forr(ult,r-l+1,n){
+				if(act==s) break;
+				forn(i,r-l+1){
+					arr[ult-i]=false;
+					arr[ult+1-i]=true;
+					act++;
+					if(act==s) break;
+				}
+			}
+			deque<ll> ans;
+			forn(i,n+1) if(arr[i]) ans.pb(i);
+			ll cant=1;
+			forr(i,1,n+1){
+				if(cant<l && !arr[i]){
+					ans.push_front(i); 
+					cant++;
+				}
+			}
+			cant=0;
+			dforn(i,n+1) if(cant<n-r && !arr[i]){
+				 ans.pb(i);
+				 cant++;
+			}
+			forn(i,ans.size()) cout<<ans[i]<<" ";
+			cout<<"\n"; 
 		}
-		while(y>0){
-			by.pb(y&1);
-			y/=2;
-		}
-		x>y? by.resize(bx.size(),0) : bx.resize(by.size(),0);
-		reverse(bx.begin(),bx.end());
-		reverse(by.begin(),by.end());
+			
 		
 	}
+	
 	
 	return 0;
 }
