@@ -24,51 +24,7 @@ using namespace std;
 
 typedef long long ll;
 typedef pair<int,int> ii;
-
-ll calc(vector<int> &arr){
-	ll ans=0;
-	ll n=sz(arr);
-	forn(i,n){
-		if(arr[i]==0 || arr[i]==2) continue;
-		ll ci=-1,cd=-1;
-		dforn(j,i){
-			if(arr[j]==0){
-				ci=j;
-				break;
-			}
-		}
-		forr(j,i+1,n){
-			if(arr[j]==0){
-				cd=j;
-				break;
-			}
-		}
-		if(ci!=-1 && cd!=-1){
-			if(i-ci<=cd-i){
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}else{
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}
-		}else{
-			if(ci==-1){
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}else{
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}
-		}
-	}
-	return ans;
-}
-
-
+const ll mod = 104206969LL;
 int main()
 {
 	#ifdef ANARAP
@@ -78,13 +34,28 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	int n;
-	cin>>n;
-	vector<int> arr(n),arr2(n);
-	forn(i,n) cin>>arr[i];
-	arr2=arr;
-	reverse(arr2.begin(),arr2.end());
-	cout<<min(calc(arr),calc(arr2))<<endl;
+	int mes[12]={1,2,3,4,5,6,7,8,9,10,11,12}, dias[12]={31,28,31,30,31,30,31,31,30,31,30,31};
+	ll anio=0;
+	forn(i,12){
+		forr(j,1,dias[i]+1){
+			ll aux=j,act=mes[i];
+			while(aux>0){
+				act*=10;
+				aux/=10;
+			}
+			act+=j;
+			anio+=act;
+		}
+	}
+	
+	ll a,b;
+	cin>>a>>b;
+	a--;
+	//cout<<anio*5<<endl;
+	ll ansa = a%mod*anio%mod + ((a/4)-(a/100)+(a/400))%mod* 229 + anio + 229;
+	if(a==-1) ansa=0LL;
+	ll ansb = b%mod*anio%mod + ((b/4)-(b/100)+(b/400))%mod* 229 + anio + 229;
+	cout<<((ansb-ansa)%mod+mod)%mod<<"\n";
 	
 	return 0;
 }

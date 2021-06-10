@@ -25,49 +25,11 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
-ll calc(vector<int> &arr){
-	ll ans=0;
-	ll n=sz(arr);
-	forn(i,n){
-		if(arr[i]==0 || arr[i]==2) continue;
-		ll ci=-1,cd=-1;
-		dforn(j,i){
-			if(arr[j]==0){
-				ci=j;
-				break;
-			}
-		}
-		forr(j,i+1,n){
-			if(arr[j]==0){
-				cd=j;
-				break;
-			}
-		}
-		if(ci!=-1 && cd!=-1){
-			if(i-ci<=cd-i){
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}else{
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}
-		}else{
-			if(ci==-1){
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}else{
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}
-		}
-	}
-	return ans;
-}
 
+
+bool check(ll x1,ll x2, ll x, ll y, ll a, ll b){
+	return (x1*a+x2*b<=x) && (x1*b+x2*a<=y);
+}
 
 int main()
 {
@@ -78,13 +40,30 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	int n;
-	cin>>n;
-	vector<int> arr(n),arr2(n);
-	forn(i,n) cin>>arr[i];
-	arr2=arr;
-	reverse(arr2.begin(),arr2.end());
-	cout<<min(calc(arr),calc(arr2))<<endl;
+	ll t;
+	cin>>t;
+	forn(T,t){
+		long double x,y,a,b;
+		cin>>x>>y>>a>>b;
+		long double x1,x2;
+		x1=(y/a-x/b)/(b/a-a/b);
+		x2=(-b/a)*x1+(y/a);
+		ll ans=0;
+		if(x1>=0 && x2>=0){
+			ans = floor(x1)+floor(x2);
+			if(check(floor(x1),ceil(x2),floor(x),floor(y),floor(a),floor(b))){
+				ll aux=floor(x1)+ceil(x2);
+				ans=max(ans,aux);
+			}if(check(ceil(x1),floor(x2),floor(x),floor(y),floor(a),floor(b))){
+				ll aux = ceil(x1)+floor(x2);
+				ans=max(ans,aux);
+			}
+		}
+		ll lx=floor(x),ly=floor(y),la=floor(a),lb=floor(b);
+		ans = max(ans,min(lx/la,ly/lb));
+		ans=max(ans,min(lx/lb,ly/la));
+		cout<<ans<<"\n";
+	}
 	
 	return 0;
 }

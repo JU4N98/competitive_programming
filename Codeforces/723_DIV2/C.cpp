@@ -23,51 +23,8 @@
 using namespace std;
 
 typedef long long ll;
-typedef pair<int,int> ii;
-
-ll calc(vector<int> &arr){
-	ll ans=0;
-	ll n=sz(arr);
-	forn(i,n){
-		if(arr[i]==0 || arr[i]==2) continue;
-		ll ci=-1,cd=-1;
-		dforn(j,i){
-			if(arr[j]==0){
-				ci=j;
-				break;
-			}
-		}
-		forr(j,i+1,n){
-			if(arr[j]==0){
-				cd=j;
-				break;
-			}
-		}
-		if(ci!=-1 && cd!=-1){
-			if(i-ci<=cd-i){
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}else{
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}
-		}else{
-			if(ci==-1){
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}else{
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}
-		}
-	}
-	return ans;
-}
-
+typedef pair<ll,ll> ii;
+ll dp[2010][2010];
 
 int main()
 {
@@ -78,13 +35,25 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	int n;
+	ll n;
 	cin>>n;
-	vector<int> arr(n),arr2(n);
+	vector<ll> arr(n);
 	forn(i,n) cin>>arr[i];
-	arr2=arr;
-	reverse(arr2.begin(),arr2.end());
-	cout<<min(calc(arr),calc(arr2))<<endl;
+	
+	forn(i,n+1) forn(j,n+1) dp[i][j]=-1;
+	forn(i,n+1) if(arr[i]>=0) dp[i+1][1]=arr[i];
+	
+	forn(i,n){
+		forn(j,n+1){
+			if(dp[i][j]>=0){
+				if(dp[i][j]+arr[i]>=0) dp[i+1][j+1]=max(dp[i+1][j+1],dp[i][j]+arr[i]);
+				dp[i+1][j]=max(dp[i+1][j],dp[i][j]);
+			}
+		}
+	}
+	ll ans=0;
+	forn(i,n+1) if(dp[n][i]!=-1) ans=i;
+	cout<<ans<<"\n";
 	
 	return 0;
 }

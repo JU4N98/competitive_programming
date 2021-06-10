@@ -25,50 +25,6 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
-ll calc(vector<int> &arr){
-	ll ans=0;
-	ll n=sz(arr);
-	forn(i,n){
-		if(arr[i]==0 || arr[i]==2) continue;
-		ll ci=-1,cd=-1;
-		dforn(j,i){
-			if(arr[j]==0){
-				ci=j;
-				break;
-			}
-		}
-		forr(j,i+1,n){
-			if(arr[j]==0){
-				cd=j;
-				break;
-			}
-		}
-		if(ci!=-1 && cd!=-1){
-			if(i-ci<=cd-i){
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}else{
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}
-		}else{
-			if(ci==-1){
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}else{
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}
-		}
-	}
-	return ans;
-}
-
-
 int main()
 {
 	#ifdef ANARAP
@@ -78,13 +34,50 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	int n;
-	cin>>n;
-	vector<int> arr(n),arr2(n);
-	forn(i,n) cin>>arr[i];
-	arr2=arr;
-	reverse(arr2.begin(),arr2.end());
-	cout<<min(calc(arr),calc(arr2))<<endl;
+	vector<string> comp;
+	forn(i,26){
+		char ci = ('a'+i);
+		string s1;
+		s1+=ci;
+		comp.pb(s1);
+		forn(j,26){
+			char ji = ('a'+j);
+			string s2;
+			s2+=ci;
+			s2+=ji;
+			comp.pb(s2);
+			forn(k,26){
+				char ki = ('a'+k);
+				string s3;
+				s3+=ci;
+				s3+=ji;
+				s3+=ki;
+				comp.pb(s3);
+			}
+		}
+	}
+	
+	ll t;
+	cin>>t;
+	forn(T,t){
+		ll n;
+		cin>>n;
+		string s;
+		cin>>s;
+		set<string> ss;
+		forn(i,n){
+			string sub="";
+			forr(j,i,i+3){
+				sub+=s[j];
+				ss.insert(sub);
+			}
+		}
+		string ans="aaaa";
+		forn(i,sz(comp)){
+			if(ss.find(comp[i])==ss.end() && sz(ans)>sz(comp[i])) ans=comp[i];
+		}
+		cout<<ans<<"\n";
+	}
 	
 	return 0;
 }

@@ -25,50 +25,6 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
-ll calc(vector<int> &arr){
-	ll ans=0;
-	ll n=sz(arr);
-	forn(i,n){
-		if(arr[i]==0 || arr[i]==2) continue;
-		ll ci=-1,cd=-1;
-		dforn(j,i){
-			if(arr[j]==0){
-				ci=j;
-				break;
-			}
-		}
-		forr(j,i+1,n){
-			if(arr[j]==0){
-				cd=j;
-				break;
-			}
-		}
-		if(ci!=-1 && cd!=-1){
-			if(i-ci<=cd-i){
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}else{
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}
-		}else{
-			if(ci==-1){
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}else{
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}
-		}
-	}
-	return ans;
-}
-
-
 int main()
 {
 	#ifdef ANARAP
@@ -78,13 +34,28 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	int n;
+	ll n;
 	cin>>n;
-	vector<int> arr(n),arr2(n);
-	forn(i,n) cin>>arr[i];
-	arr2=arr;
-	reverse(arr2.begin(),arr2.end());
-	cout<<min(calc(arr),calc(arr2))<<endl;
+	string s;
+	cin>>s;
+	vector<ll> letras(26),fact(21);
+	fact[0]=1;
+	forr(i,1,21) fact[i]=fact[i-1]*i;
+	forn(i,n) letras[s[i]-'a']++;
+	ll ans=1;
+	bool secure=false;
+	forn(i,26){
+		if(letras[i]>0){
+			ans*=(fact[n]/fact[n-letras[i]]);
+			ans/=fact[letras[i]];
+		}
+		if(ans>=365*24*60*60 || ans<0) secure=true;
+		n-=letras[i];
+	}
+	
+	if(secure) cout<<"Secure\n";
+	else cout<<floor(ans)<<"\n";
+	
 	
 	return 0;
 }

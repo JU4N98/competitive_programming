@@ -25,50 +25,6 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
-ll calc(vector<int> &arr){
-	ll ans=0;
-	ll n=sz(arr);
-	forn(i,n){
-		if(arr[i]==0 || arr[i]==2) continue;
-		ll ci=-1,cd=-1;
-		dforn(j,i){
-			if(arr[j]==0){
-				ci=j;
-				break;
-			}
-		}
-		forr(j,i+1,n){
-			if(arr[j]==0){
-				cd=j;
-				break;
-			}
-		}
-		if(ci!=-1 && cd!=-1){
-			if(i-ci<=cd-i){
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}else{
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}
-		}else{
-			if(ci==-1){
-				ans+=cd-i;
-				arr[i]=2;
-				arr[cd]=2;
-			}else{
-				ans+=i-ci;
-				arr[i]=2;
-				arr[ci]=2;
-			}
-		}
-	}
-	return ans;
-}
-
-
 int main()
 {
 	#ifdef ANARAP
@@ -78,13 +34,32 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	int n;
-	cin>>n;
-	vector<int> arr(n),arr2(n);
-	forn(i,n) cin>>arr[i];
-	arr2=arr;
-	reverse(arr2.begin(),arr2.end());
-	cout<<min(calc(arr),calc(arr2))<<endl;
+	bool criba[40000];
+	forn(i,40000) criba[i]=true;
+	forr(i,2,40000){
+		if(criba[i]) for(int j=i+i;j<40000;j+=i) criba[j]=false;
+	}
+	vector<ll> primos;
+	forr(i,2,40000) if(criba[i]) primos.pb(i);
+	
+	ll t;
+	cin>>t;
+	forn(T,t){
+		ll a,b,k;
+		cin>>a>>b>>k;
+		if((max(a,b)%min(a,b)!=0 || a==b)&& k<2) cout<<"NO\n";
+		else{
+			map<ll,ll> fa,fb;
+			forn(i,sz(primos)) while(a%primos[i]==0) fa[primos[i]]++,a/=primos[i];
+			if(a>1) fa[a]++;
+			forn(i,sz(primos)) while(b%primos[i]==0) fb[primos[i]]++,b/=primos[i];
+			if(b>1) fb[b]++;
+			ll sum=0;
+			forall(it,fa) sum+=it->snd;
+			forall(it,fb) sum+=it->snd;
+			if(sum>=k) cout<<"YES\n"; else cout<<"NO\n";
+		}
+	}
 	
 	return 0;
 }
