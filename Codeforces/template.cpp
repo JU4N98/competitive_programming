@@ -12,9 +12,8 @@
 #define ub upper_bound
 #define fst first
 #define snd second
-#define ANARAP
 
-#ifdef ANARAP
+#ifdef LASCALONETA
 //local
 #else
 //judge
@@ -27,7 +26,7 @@ typedef pair<int,int> ii;
 
 int main()
 {
-	#ifdef ANARAP
+	#ifdef LASCALONETA
 		freopen("input.in", "r", stdin);
 	#endif
 	ios::sync_with_stdio(false);
