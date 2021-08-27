@@ -24,39 +24,6 @@ using namespace std;
 typedef long long ll;
 typedef pair<ll,ll> ii;
 
-struct frac{
-	ll p,q;
-	frac(int p=0,int q=1):p(p),q(q) {norm();}
-	void norm()
-	{
-		int a=__gcd(q,p);
-		if(a) p/=a, q/=a;
-		else q=1;
-		if (q<0) q=-q, p=-p;
-	}
-	frac operator+(const frac& o)
-	{
-		int a=__gcd(o.q,q);
-		return frac(p*(o.q/a)+o.p*(q/a),q*(o.q/a));
-	}
-	frac operator-(const frac& o)
-	{
-		int a=__gcd(o.q,q);
-		return frac(p*(o.q/a)-o.p*(q/a),q*(o.q/a));
-	}
-	frac operator*(frac o)
-	{
-		int a=__gcd(o.p,q), b=__gcd(p,o.q);
-		return frac((p/b)*(o.p/a),(q/a)*(o.q/b));
-	}
-	frac operator/(frac o)
-	{
-		int a=__gcd(o.q,q), b=__gcd(p,o.p);
-		return frac((p/b)*(o.q/a),(q/a)*(o.p/b));
-	}
-	bool operator<(const frac &o) const{return p*o.q < o.p*q;}
-	bool operator==(frac o){return p==o.p&&q==o.q;}
-};
 
 int main()
 {
@@ -68,81 +35,59 @@ int main()
 	cout.tie(NULL);
 	
 	ll n,w; cin>>n>>w;
-	vector<ii> arr(n);
-	forn(i,n) cin>>arr[i].fst>>arr[i].snd;
-	set<pair<frac,ii>> s;
+	vector<int> a(n);
+	vector<ii> b(n);
 	forn(i,n){
-		if(frac(arr[i].fst,1)<frac(arr[i].snd,2) || frac(arr[i].fst,1)==frac(arr[i].snd,2)) s.insert({frac(arr[i].fst,1),{0,i}});
-		else s.insert({frac(arr[i].fst,2),{1,i}});
+		cin>>a[i]>>b[i].fst;
+		b[i].snd=i;
 	}
+	sort(b.begin(),b.end());
 	
-	vector<ll> resp(n);
-	vector<bool> visi1(n,false),visi2(n,false);
-	ll sum=0, ans=0,max2=-1;
-	while(!s.empty() && sum<w){
-		pair<frac,ii> p = *s.begin();
-		s.erase(s.begin());
-		ll idx = p.snd.snd, stars = p.snd.fst;
-		if(stars==0){
-			ans+=arr[idx].fst;
-			sum+=1;
-			s.insert({frac(arr[idx].snd-arr[idx].fst,1),{2,idx}});
-			visi1[idx]=true;
-			resp[idx]=1;
-		}else if(stars==1){
-			ans+=arr[idx].snd;
-			sum+=2;
-			visi2[idx]=true;
-			max2 = idx;
-			resp[idx]=2;
-		}else{
-			ans+=arr[idx].snd-arr[idx].fst;
-			sum+=1;
-			visi2[idx]=true;
-			max2=idx;
-			resp[idx]=2;
+	
+	
+	ll ini=-1;
+	forn(i,-1,n){
+		if((i+1)*2+(n-i)>=w){
+			ini=i;
+			break;
 		}
 	}
-	if(sum>w){
-		ll ahorro = 0, tipo=-1,idx=-1;
-		forn(i,n){
-			if(visi1[i] && !visi2[i]){
-				if(ahorro<arr[i].fst){
-					tipo=0;
-					idx=i;
-					ahorro=arr[i].fst;
-				}
-			}
-			if(!visi1[i] && !visi2[i] && max2!=-1){
-				if(ahorro<arr[max2].snd-arr[i].fst){
-					tipo=1;
-					idx=i;
-					ahorro=arr[max2].snd-arr[i].fst;
-				}
-			}
-			if(!visi1[i] && visi2[i]){
-				if(ahorro<arr[i].snd-arr[i].fst){
-					tipo=2;
-					idx=i;
-					ahorro=arr[i].snd-arr[i].fst;
-				}
-			}
+	vector<int> ans(n);
+	multiset<ii> sel,pq;
+	ll sum = 0, cant=0;
+	forr(i,ini+1){
+		sel.insert({a[b[i].snd],b[i].snd});
+		pq.insert({b[i].fst-a[b[i].snd],b[i].snd});
+		ans[b[i].snd]=1;
+		sum+=a[b[i].snd];
+		cant++;
+	}
+	forr(i,ini+1,n){
+		pq.insert({a[b[i].snd],b[i].snd});
+	}
+	while(cant<k){
+		ii act = *(pq.begin());
+		sel.insert(act);
+		pq.erase(pq.begin());
+		ans[act.snd]++;
+		cant++;
+		sum += act.fst;
+	}
+	forr(i,ini+1,n){
+		if(ans[i]==0){
+			sel.insert({b[i].fst-a[b[i].snd],b[i].snd});
+			pq.erase({b[i].fst-a[b[i].snd],b[i].snd});
+			cant++;
 		}
-		ans-=ahorro;
-		if(tipo==0){
-			resp[idx]=0;
+		while((*(sel.rbegin())).fst>(*(pq.begin())).fst){
+			ii ult = *(sel.rbegin()); sel.erase(ult);
+			if(ult)
+			ii pri = *(pq.begin()); pq.erase(pri);
 		}
-		if(tipo==1){
-			resp[max2]=0;
-			resp[idx]=1;
-		}
-		if(tipo==2){
-			resp[idx]=1;
+		while(cant>k){
+			
 		}
 	}
-	cout<<ans<<"\n";
-	forn(i,n) cout<<resp[i];
-	cout<<"\n";
 	
 	
 	return 0;
