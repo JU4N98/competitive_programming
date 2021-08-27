@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #define bdg(x) cerr<<#x<<"="<<(x)<<endl;
-#define forr(i,a,b) for(ll i=(a);i<(b);i++)
+#define forr(i,a,b) for(int i=(a);i<(b);i++)
 #define forn(i,n) forr(i,0,n)
 #define dforn(i,n) for(int i=n-1;i>=0;i--)
 #define forall(it,v) for(auto it=v.begin();it!=v.end();it++)
@@ -22,7 +22,7 @@
 using namespace std;
 
 typedef long long ll;
-typedef pair<int,int> ii;
+typedef pair<ll,ll> ii;
 
 int main()
 {
@@ -35,15 +35,40 @@ int main()
 	
 	ll t; cin>>t;
 	forn(T,t){
-		ll n,k; cin>>n>>k;
-		vector<int> arr(n); forn(i,n) cin>>arr[i];
-		ll ans=INT_MIN;
+		ll n; cin>>n;
+		vector<vector<ll>> cav(n);
 		forn(i,n){
-			forr(j,max(i+1,n-1-2*k),n){
-				ans=max(ans,(i+1)*(j+1)-k*(arr[i]|arr[j]));
+			ll k; cin>>k;
+			cav[i].resize(k);
+			forn(j,k) cin>>cav[i][j];
+		}
+		
+		multiset<ii> val;
+		forn(i,n){
+			ll ini = cav[i][0]+1;
+			ll act = cav[i][0]+1;
+			forn(j,sz(cav[i])){
+				if(cav[i][j]>=act){
+					ini += (cav[i][j] - act)+1;
+					act = cav[i][j]+1;
+				}
+				act++;
 			}
+			val.insert({ini,(act-ini)});
+		}
+		ll ans=(val.begin())->fst;
+		ll act=val.begin()->fst;
+		forall(it,val){
+			//~ cout<<it->fst<<" "<<it->snd<<endl;
+			ii p = *it;
+			if(act<p.fst){
+				ans += p.fst-act;
+				act = p.fst;
+			}
+			act += p.snd;
 		}
 		cout<<ans<<"\n";
+		
 	}
 	
 	return 0;

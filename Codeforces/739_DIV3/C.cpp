@@ -12,9 +12,8 @@
 #define ub upper_bound
 #define fst first
 #define snd second
-//#define ANARAP
 
-#ifdef ANARAP
+#ifdef LASCALONETA
 //local
 #else
 //judge
@@ -34,19 +33,28 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	ll t;
-	cin>>t;
+	ll t; cin>>t;
 	forn(T,t){
-		ll a,b,aux;
-		cin>>a>>b;
-		aux=min(a,b);
-		b=max(a,b);
-		a=aux;
-		if(a!=b){
-			if(a%abs(a-b)==0) cout<<abs(a-b)<<" 0\n";
-			else cout<<abs(a-b)<<" "<<min(a%abs(a-b),abs(a-b)-a%abs(a-b))<<"\n";
-		}else cout<<"0 0\n";
+		ll k; cin>>k;
+		ll sum=0,act=1,col=1;
+		forr(i,1,40000){
+			sum+=act;
+			act+=2;
+			if(sum>=k){
+				col=i;
+				break;
+			}
+		}
+		if(sum-(act-2)+col<k){
+			ll fil=col;
+			col-= k - (sum-(act-2)+col);
+			cout<<fil<<" "<<col<<"\n";
+		}else{
+			ll fil = k - (sum-(act-2));
+			cout<<fil<<" "<<col<<"\n";
+		}
 	}
+	
 	
 	return 0;
 }

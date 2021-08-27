@@ -12,9 +12,8 @@
 #define ub upper_bound
 #define fst first
 #define snd second
-//#define ANARAP
 
-#ifdef ANARAP
+#ifdef LASCALONETA
 //local
 #else
 //judge
@@ -34,18 +33,31 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	ll t;
-	cin>>t;
+	int criba[101];
+	forn(i,101) criba[i]=true;
+	criba[1]=false;
+	forr(i,2,101){
+		if(criba[i]) for(int j=i+i;j<101;j+=i) criba[j]=false;
+	}
+	
+	int t; cin>>t;
 	forn(T,t){
-		ll a,b,aux;
-		cin>>a>>b;
-		aux=min(a,b);
-		b=max(a,b);
-		a=aux;
-		if(a!=b){
-			if(a%abs(a-b)==0) cout<<abs(a-b)<<" 0\n";
-			else cout<<abs(a-b)<<" "<<min(a%abs(a-b),abs(a-b)-a%abs(a-b))<<"\n";
-		}else cout<<"0 0\n";
+		int n; cin>>n;
+		string s; cin>>s;
+		ii ans={101,101};
+		forn(i,n){
+			forr(j,i+1,n){
+				int aux = (s[i]-'0')*10 +(s[j]-'0');
+				if(!criba[aux]){
+					ans=min(ans,{2,aux});
+				}
+			}
+			if(s[i] && !criba[s[i]-'0']){
+				ans=min(ans,{1,s[i]-'0'});
+			}
+		}
+		cout<<ans.fst<<"\n"<<ans.snd<<"\n";
+		
 	}
 	
 	return 0;

@@ -12,9 +12,8 @@
 #define ub upper_bound
 #define fst first
 #define snd second
-//#define ANARAP
 
-#ifdef ANARAP
+#ifdef LASCALONETA
 //local
 #else
 //judge
@@ -25,6 +24,12 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
+bool ord(vector<int> &arr){
+	bool ans=true;
+	forn(i,sz(arr)-1) if(arr[i]>arr[i+1]) ans=false;
+	return ans;
+}
+
 int main()
 {
 	#ifdef LASCALONETA
@@ -34,18 +39,29 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	ll t;
-	cin>>t;
+	int t; cin>>t;
 	forn(T,t){
-		ll a,b,aux;
-		cin>>a>>b;
-		aux=min(a,b);
-		b=max(a,b);
-		a=aux;
-		if(a!=b){
-			if(a%abs(a-b)==0) cout<<abs(a-b)<<" 0\n";
-			else cout<<abs(a-b)<<" "<<min(a%abs(a-b),abs(a-b)-a%abs(a-b))<<"\n";
-		}else cout<<"0 0\n";
+		int n; cin>>n;
+		vector<int> arr(n);
+		forn(i,n) cin>>arr[i];
+		int ite=0;
+		while(!ord(arr)){
+			if((ite+1)%2==1){
+				for(int i=0;i<n-1;i+=2){
+					if(arr[i]>arr[i+1]){
+						int aux=arr[i]; arr[i]=arr[i+1]; arr[i+1]=aux;
+					}
+				}
+			}else{
+				for(int i=1;i<n-1;i+=2){
+					if(arr[i]>arr[i+1]){
+						int aux=arr[i]; arr[i]=arr[i+1]; arr[i+1]=aux;
+					}
+				}
+			}
+			ite++;
+		}
+		cout<<ite<<"\n";
 	}
 	
 	return 0;

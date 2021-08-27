@@ -12,9 +12,8 @@
 #define ub upper_bound
 #define fst first
 #define snd second
-//#define ANARAP
 
-#ifdef ANARAP
+#ifdef LASCALONETA
 //local
 #else
 //judge
@@ -34,18 +33,28 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	ll t;
-	cin>>t;
+	int t; cin>>t;
 	forn(T,t){
-		ll a,b,aux;
-		cin>>a>>b;
-		aux=min(a,b);
-		b=max(a,b);
-		a=aux;
-		if(a!=b){
-			if(a%abs(a-b)==0) cout<<abs(a-b)<<" 0\n";
-			else cout<<abs(a-b)<<" "<<min(a%abs(a-b),abs(a-b)-a%abs(a-b))<<"\n";
-		}else cout<<"0 0\n";
+		int n; cin>>n; string s; cin>>s;
+		ii p1,p2;
+		if(n==2){
+			if(s[0]=='1') p2 = {2,2}, p1 = {1,1};
+			else p2 = {1,1}, p1 = {2,2};
+		}else{
+			forr(i,(n/2),n) if(s[i]=='0'){
+				p1.fst=i-(n/2)+1;
+				p1.snd=i;
+				p2.fst=i-(n/2)+1;
+				p2.snd=i+1;
+			}
+			forr(i,(n/2)-1,n-2) if(s[i+1]=='1' && s[i+2]=='1'){
+				p1.fst=i-(n/2)+1;
+				p1.snd=i;
+				p2.fst=i-(n/2)+1;
+				p2.snd=i+2;
+			}
+		}
+		cout<<p1.fst<<" "<<p1.snd<<" "<<p2.fst<<" "<<p2.snd<<"\n";
 	}
 	
 	return 0;
