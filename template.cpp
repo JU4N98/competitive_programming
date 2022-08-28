@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define bdg(x) cerr<<#x<<"="<<(x)<<endl;
+#define dbg(x) cerr<<#x<<"="<<(x)<<endl;
 #define forr(i,a,b) for(int i=(a);i<(b);i++)
 #define forn(i,n) forr(i,0,n)
 #define dforn(i,n) for(int i=n-1;i>=0;i--)
@@ -13,7 +13,7 @@
 #define fst first
 #define snd second
 
-#ifdef LASCALONETA
+#ifdef ANARAP
 //local
 #else
 //judge
@@ -26,7 +26,7 @@ typedef pair<int,int> ii;
 
 int main()
 {
-	#ifdef LASCALONETA
+	#ifdef ANARAP
 		freopen("input.in", "r", stdin);
 	#endif
 	ios::sync_with_stdio(false);

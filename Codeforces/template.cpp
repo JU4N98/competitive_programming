@@ -13,7 +13,7 @@
 #define fst first
 #define snd second
 
-#ifdef LASCALONETA
+#ifdef ANARAP
 //local
 #else
 //judge
@@ -26,7 +26,7 @@ typedef pair<int,int> ii;
 
 int main()
 {
-	#ifdef LASCALONETA
+	#ifdef ANARAP
 		freopen("input.in", "r", stdin);
 	#endif
 	ios::sync_with_stdio(false);
